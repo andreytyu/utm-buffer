@@ -31,8 +31,7 @@ def utm_buffers(gdf, buffer_size):
         geopandas.GeoSeries: GeoSeries containing buffer zones
     """
     rep_points = gdf['geometry'].representative_point()
-    lons = [geom.x for geom in rep_points]
-    lats = [geom.y for geom in rep_points]
+    lons,lats = zip(*[(geom.x, geom.y) for geom in rep_points])
     utm_zones = [int(32700-round((45+lat)/90,0)*100+round((183+lon)/6,0)) for lat,lon in zip(lons,lats)]
     buffers = [project_to_from(
         project_to_from(
